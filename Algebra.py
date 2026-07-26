@@ -36,10 +36,7 @@ def vector_mean(vectors:List[Vector])->Vector:
     return (multiply(sumvector(vectors),(1/len(vectors))))
 #tich vo huong
 def scalar_product(v:Vector,w:Vector)->float:
-    if (len(v)!=len(w)):
-        raise ValueError("Vectors must be of the same length")
-    else:
-        return sum(v_i * w_i for v_i, w_i in zip(v,w))
+    return sum(v_i * w_i for v_i, w_i in zip(v,w))
 #magnitude
 def magnitude(v:Vector)->float:
     if (len(v)==0):
@@ -67,10 +64,10 @@ def shape(m:Matrix)->Tuple[int, int]:
     return len(m), len(m[0]) if m else 0
 #make matrix
 def make_matrix(row:int, col:int, entry_fn:Callable[[int,int],float])->Matrix:
-    return [[entry_fn(i,j)]
-            for j in range(col)
+    return [[entry_fn(i,j)
+            for j in range(col)]
             for i in range(row)
-            ]
+    ]
 #identity_matrix
 def identity_matrix(n:int)->Matrix:
     return make_matrix(n,n,lambda i, j:1 if i==j else 0)

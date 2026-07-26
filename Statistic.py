@@ -1,6 +1,7 @@
 from typing import List
 from typing import Tuple
 from typing import Callable
+import Algebra as lt
 import math
 # __________________
 #|                  |
@@ -40,14 +41,39 @@ def quantile(v:List[float],p:float)->float:
 #data range
 def data_range(v:List[float])->float:
     return max(v)-min(v)
+#deviation mean
+def de_mean(v:List[float])->List[float]:
+    v_bar=mean(v)
+    return [v_i-v_bar for v_i in v]
+#sum of squares
+def sum_of_squares(v:List[float])->float:
+    return lt.scalar_product(v,v)
 #variance
 def variance(v:List[float])->float:
-    m=mean(v)
-    return (sum((v_i-m)**2 for v_i in v)*(1/len(v)))
+    m=de_mean(v)
+    n=len(v)
+    return sum_of_squares(m)/(n-1)
 #standard variance
-def standard_variance(v:List[float])->float:
+def standard_deviation(v:List[float])->float:
     return math.sqrt(variance(v))
 #interquartile range
 def interquartile_range(v:List[float])->float:
     return quantile(v,0.75)-quantile(v,0.25)
 
+# ___________
+#|           |
+#|CORRELATION|
+#|___________|
+
+#covariance
+def covariance(a:List[float],b:List[float])->float:
+    return lt.scalar_product(de_mean(a),de_mean(b))/(len(a)-1)
+
+#correlation
+def correlation(a:List[float],b:List[float])->float:
+    stdev_x=standard_deviation(a)
+    stdev_y=standard_deviation(b)
+    if (stdev_x>0 and stdev_y>0):
+        return covariance(a,b)/(stdev_x*stdev_y)
+    else:
+        return 0
